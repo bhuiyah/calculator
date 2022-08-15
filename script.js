@@ -107,15 +107,15 @@ function operate(operator, num1, num2){
     num2 = Number(num2);
 
     if(operator == 'add'){
-        return add(num1, num2);
+        return parseFloat(add(num1, num2).toFixed(4));
     }
     else if(operator == 'subtract'){
-        return subtract(num1, num2);
+        return parseFloat(subtract(num1, num2).toFixed(4));
     }
     else if(operator == 'multiply'){
-        return multiply(num1, num2);
+        return parseFloat(multiply(num1, num2).toFixed(4));
     }
     else if(operator == 'divide'){
-        return divide(num1, num2);
+        return parseFloat(divide(num1, num2).toFixed(4));
     }
 }
