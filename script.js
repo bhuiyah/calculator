@@ -4,17 +4,34 @@ const display = document.querySelector('.display');
 const clear = document.querySelector('#Clear')
 const allClear = document.querySelector('#allClear')
 const equal = document.querySelector('#equal');
+const negative = document.querySelector('#negative');
+const decimal = document.querySelector('#decimal');
 
 let firstNum = 0;
 let newNum = 0;
 let answer = 0;
 let operator = '';
+let chainedOperator = '';
 let needRestart = 0;
+let onceFlag = true;
 
 clear.addEventListener('click', ()=> clearDisplay());
 display.textContent = '0';
 
 allClear.addEventListener('click', ()=>clearEverything());
+
+negative.addEventListener('click', ()=> {
+    if(display.textContent != 0){
+        display.textContent*=-1;
+    }
+})
+
+decimal.addEventListener('click', ()=>{
+    if(display.textContent.includes('.')){
+        return;
+    }
+    display.textContent+='.';
+});
 
 for(const num of numbers){
     num.addEventListener('click', ()=> DisplayNum(num.textContent))
@@ -23,15 +40,15 @@ for(const num of numbers){
 for(const ops of operations){
     ops.addEventListener('click', ()=>{
         needRestart = 1;
+        chainedOperator = operator;
+        operator = ops.id;
         if(firstNum == 0){
-            operator = ops.id;
-            console.log(operator);
             firstNum = display.textContent;
-            console.log(firstNum);
         }
         else{
-            display.textContent= operate(operator, firstNum, display.textContent);
-            operator = ops.id;
+            if(chainedOperator == ''){return;}
+            display.textContent= operate(chainedOperator, firstNum, display.textContent);
+            firstNum = display.textContent;
         }
     })
 }
@@ -42,8 +59,7 @@ function DisplayNum(x){
     if(needRestart == 1){
         clearDisplay();
     }
-
-    if(display.textContent == 0){
+    if(display.textContent === '0'){
         display.textContent = x;
     }
     else{
@@ -62,22 +78,13 @@ function clearEverything(){
 }
 
 function equalsFunction(){
+    if(operator == ''){
+        return;
+    }
     display.textContent = operate(operator, firstNum, display.textContent)
     firstNum = display.textContent;
+    operator = '';
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function add(a, b) {
 	return (a+b);
